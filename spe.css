@@ -1,16 +1,16 @@
 body {
     background:black;
-    left-padding:10%;
-    right-padding:10%;
 }
 p{
     align:justify;
     background:black;
     color:white;
+    width:80%;
 }
 
 h1,h2{
     align:justify;
     background:black;
     color:white;
+    width:80%;
 }
