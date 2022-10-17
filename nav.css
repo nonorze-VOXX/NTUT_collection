@@ -1,0 +1,19 @@
+#horizontal li {
+    background-color: cornflowerblue;
+    color: yellow;
+    display: inline;
+    border: 1px #ccc solid;
+    margin-right: 25px;
+    padding: 10px;
+    font-size: 30px;
+}
+
+#horizontal li :hover {
+    background-color: green;
+    display: inline;
+    border: 1px #ccc solid;
+    padding: 10px;
+    margin-right: 25px;
+    color: orange;
+    font-size: 30px;
+}
