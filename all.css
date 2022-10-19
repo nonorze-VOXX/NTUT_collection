@@ -19,7 +19,48 @@ body {
 }
 
 img.headPicture {
+    height: auto;
     border-radius: 50%;
+}
+
+div.headPicture-container {
+    position: relative;
+    border-radius: 50%;
+    width: 50%;
+}
+
+div.headPicture-container:hover .overlay {
+    opacity: 1;
+    color: black;
+}
+
+.overlay {
+    position: absolute;
+    top: 60%;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: auto;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: white;
+
+    color: black;
+    /*background-color: #008CBA;
+    */
+}
+
+.headText {
+    color: black;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 .italic {

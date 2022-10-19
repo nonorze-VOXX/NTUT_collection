@@ -92,8 +92,13 @@
     </nav>
     <div>
         <div class="leftHalf" style="background-color:white">
-            <div>
-                <img class="headPicture" src="../../picture/hachi_head.png" alt="Avatar">
+            <div class="headPicture-container">
+                <img class="headPicture" usemap="#headmap" src="../../picture/hachi_head.png" alt="Avatar">
+                <div class="overlay" usemap="#headmap">
+                    <div class="headText">
+                        O TSU HACHI
+                    </div>
+                </div>
             </div>
             <div>
                 Name sussy
@@ -139,6 +144,10 @@
 
         </div>
     </div>
+    <map name="headmap">
+        <area shape="rect" coords="50,50,133,130" alt="lab1" href="../../lab1.html">
+    </map>
+
 </body>
 
 </html>
