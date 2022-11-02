@@ -116,3 +116,32 @@ img.filter {
     border-style: solid;
     filter: sepia(100%);
 }
+
+tr.lab5-gray {
+    background-color: gray;
+}
+
+.lab5-greenbg {
+    background-color: chartreuse;
+}
+
+.lab5-bluebg {
+    background-color: aqua;
+}
+
+.lab5-orangebg {
+    background-color: orange;
+}
+
+.lab5-ricebg {
+    background-color: beige;
+}
+
+tr.lab5-black {
+    color: white;
+    background-color: black;
+}
+
+th span {
+    background: gold;
+}

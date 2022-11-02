@@ -1,0 +1,39 @@
+/*write your style here*/
+table.lab5 {
+    width: 300px;
+    background-color: wheat;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-spacing: 5px;
+}
+
+th.lab5 {
+    background-color: darkcyan;
+    color: white;
+}
+
+.box {
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+}
+
+.cadetblue {
+    background-color: cadetblue;
+}
+
+.darksalmon {
+    background-color: darksalmon;
+}
+
+.aquamarine {
+    background-color: aquamarine;
+}
+
+.thistle {
+    background-color: thistle;
+}
