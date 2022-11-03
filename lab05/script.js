@@ -10,6 +10,7 @@ function changeWidth(newWidth) {
 function changeBorder(newBorder) {
     target = document.getElementById("lab5Table");
     target.style.borderSpacing = newBorder + "px";
+    target.style.border = newBorder + "px solid black";
 }
 
 
