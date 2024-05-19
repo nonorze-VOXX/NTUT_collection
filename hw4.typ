@@ -55,43 +55,52 @@ and so on.
   => $O(n log(k))$
 
 ```python
-def main():
-  arr = input().split(',')
-  k= int(input())
 
-  def quickSelection(a,n):
-      if len(a)==1:
-          return (a[0],[],[])
-      s = a[len(a)//2]
-      s1=[]
-      s2=[]
-      for i in a:
-          if i<s:
-              s1.append(i)
-          if i>s:
-              s2.append(i)
-      if len(s1) >n:
-          (ans,S1,S2)=quickSelection(s1,n)
-          return (ans,S1,S2+s2+[s])
-      if len(s1) <n:
-          (ans,S1,S2)= quickSelection(s2,n-len(s1)-1)
-          return (ans,S1+s1+[s],S2)
-      if len(s1) ==n:
-          return (s,s1,s2)
-      return(-1,[],[])
+arr = input().split(',')
+k= int(input())
 
-  def sol(arr,kar):
-      if len(arr)==0 or len(kar) ==0:
-          return []
-      k = kar[len(kar)//2]
-      print(arr,kar)
-      ( e,s1,s2 ) = quickSelection(arr,k)
-      e1 = sol(s1,kar[:len(kar)//2])
-      e2 = sol(s2,kar[len(kar)//2+1:])
-      return [e]+ e1+e2
-  kar = []
-  for i in range(k):
-      kar.append(int(len(arr)/k*(i+1)))
-  kar = kar[:-1]
-  print( sol(arr,kar))
+def sol(arr,kar):
+    if len(arr)==0 or len(kar) ==0:
+        return []
+    k = kar[len(kar)//2]
+    print(arr,kar)
+    ( e,s1,s2 ) = quickSelection(arr,k)
+    e1 = sol(s1,kar[:len(kar)//2])
+    e2 = sol(s2,kar[len(kar)//2+1:])
+    return [e]+ e1+e2
+kar = []
+for i in range(k):
+    kar.append(int(len(arr)/k*(i+1)))
+kar = kar[:-1]
+print( sol(arr,kar))
 ```
+=
+
+- step1:
+  use counting sort to sort the array in O(n) time.\
+- step2:
+  find the median in the sorted array in O(1) time.
+- step3:
+  find all the elements and median distance in O(n) time.
+- step4:
+  get k minimum numbers from median to the left and right in $O(k)<O(n)$ time.
+- time compelexity:\
+  $O(n)$
+
+
+```python
+arr =[ int(i) for i in input().split(',')]
+k= int(input())
+
+(median,_,_) = quickSelection(arr,len(arr)//2)
+distance = []
+for i in arr:
+    distance.append(abs(i-median))
+(kthDistance,_,_) = quickSelection(distance,k)
+ans= []
+for i in range(len(arr)):
+    if distance[i]<kthDistance and len(ans)!=k:
+        ans.append(arr[i])
+print(ans)
+```
+
