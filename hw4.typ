@@ -13,10 +13,11 @@ $ "index"+floor(log(text("index")+1))*
 2( 0.5+floor(log(text("index")+1))- floor(text("index")+floor(log(text("index")+1))+1))$
 
 ==
-add new element to array last,\
-make new element to be the right order in max heap or min heap,\
-check the corresponding element in the other heap and swap if necessary,\
-if swap then repeat the process until the new element is in the right order.
+add new element to array last ,$O(1)$\
+make new element to be the right order in max heap or min heap, $O(log(n))$\
+check the corresponding element in the other heap and swap if necessary, $O(1)$\
+if swap then repeat the process until the new element is in the right order. $O(log(n))$
+
 
 =
 ==
@@ -77,13 +78,13 @@ print( sol(arr,kar))
 =
 
 - step1:
-  use counting sort to sort the array in O(n) time.\
+  use quickSelection to find the median in O(n) time.
 - step2:
-  find the median in the sorted array in O(1) time.
-- step3:
   find all the elements and median distance in O(n) time.
+- step3:
+  use quickSelection to get the kth smallest distance in O(n) time.
 - step4:
-  get k minimum numbers from median to the left and right in $O(k)<O(n)$ time.
+  find all element which distance which is smaller than kth smallest distance in O(n) time.
 - time compelexity:\
   $O(n)$
 
