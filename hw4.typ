@@ -44,17 +44,23 @@ and so on.
 =
 
 - step1:
-  use quickselection find the element which has randk $floor(k-1/2)*n/k$ in O(n) time.\
+  use quickselection find the element which has rank $floor((k-1)/2)*n/k$ in O(n) time.\
   that will split the array into two parts, $S_1$ is smaller than the element, and $S_2$ is larger than the element, and they have same size\
 - step2:
   repeat use step1 to get all the elements in $S_1$ and $S_2$ in O(n) time.:
-    find from $(n/k)$ to $(floor(k-1/2)-1)*n/k$  from $S_1$,
-    find from $(floor(k-1/2)-1)*n/k$  to $floor(k-1)*n/k$ from $S_2$.
+    find from $(n/k)$ to $(floor((k-1)/2)-1)*n/k$  from $S_1$,
+    find from $(floor((k-1)/2)-1)*n/k$  to $floor(k-1)*n/k$ from $S_2$.
 
 - time compelexity:\
-  $T(n) = T(n/k)+O(n)$
+  $T(n) = 2 T(n/2)+O(n)$, for $n>k$
   => $O(n log(k))$
-
+- example:
+  array = [5,6,7,8,9,0,1,2,3,4]
+  k=3
+  get target[3,6] by array[ $i*n/k=3$ for i in range(1,k)]
+  get 6,[0,1,2,3,4,5],[7,8,9] by quickSelection target[floor(len(target)/2)]
+  get 3,[0,1,2], [4,5] by quickSelection target[floor(floor(len(target)/2)/2)]
+  no other index in target, return [3,6]
 ```python
 
 arr = input().split(',')
@@ -87,17 +93,23 @@ print( sol(arr,kar))
   find all element which distance which is smaller than kth smallest distance in O(n) time.
 - time compelexity:\
   $O(n)$
-
+-example
+  array=[9,5,8,7,6,4,3,2,1]
+  k=3
+  get median 5, by quickselection 
+  get distance_array [4,0,3,2,1,1,2,3,4]
+  get 3th_min_distance=1
+  get all element distance <= 3th_min_distance, [5,6,4]
 
 ```python
 arr =[ int(i) for i in input().split(',')]
 k= int(input())
 
-(median,_,_) = quickSelection(arr,len(arr)//2)
+median = quickSelection(arr,len(arr)//2)
 distance = []
 for i in arr:
     distance.append(abs(i-median))
-(kthDistance,_,_) = quickSelection(distance,k)
+kthDistance = quickSelection(distance,k)
 ans= []
 for i in range(len(arr)):
     if distance[i]<kthDistance and len(ans)!=k:
