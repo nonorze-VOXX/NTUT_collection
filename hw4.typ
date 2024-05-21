@@ -21,24 +21,24 @@ if swap then repeat the process until the new element is in the right order. $O(
 
 =
 ==
-node of depth k in $B_k$ is the handle,
-then $T_0$ is a single handle, is same as $B_0$ tree.
-$T_1$ is a handle node link with a parent,
-that is, handle node link a $B_0$ tree, is same as $B_1$ tree.
-$T_2$ is a handle link with a parent node, and handle's parent has a parenet with one another child
-that is, handle node link $B_0$ tree and link a $B_1$ tree, is same as $B_2$ tree.
+node of depth k in $B_k$ is the handle,\
+then $T_0$ is a single handle, is same as $B_0$ tree.\
+$T_1$ is a handle node link with a parent,\
+that is, handle node link a $B_0$ tree, is same as $B_1$ tree.\
+$T_2$ is a handle link with a parent node, and handle's parent has a parenet with one another child\
+that is, handle node link $B_0$ tree and link a $B_1$ tree, is same as $B_2$ tree.\
 and so on.
 
 
 ==
-node of depth k in $B_k$ is the handle,
-then $T_0$ is a single handle,
-$T_1$ is a handle node link with a parent,
-that is, handle node link a $B_0$ tree.
-that is, $T_0$ link a $B_0$ tree's root($r_0$)
-$T_2$ is a handle link with a parent node, and handle's parent has a parenet with one another child
-that is, handle link $r_0$ and a $B_1$ tree($r_1$).
-that is, $T_1$ link $r_1$.
+node of depth k in $B_k$ is the handle,\
+then $T_0$ is a single handle,\
+$T_1$ is a handle node link with a parent,\
+that is, handle node link a $B_0$ tree.\
+that is, $T_0$ link a $B_0$ tree's root($r_0$)\
+$T_2$ is a handle link with a parent node, and handle's parent has a parenet with one another child\
+that is, handle link $r_0$ and a $B_1$ tree($r_1$).\
+that is, $T_1$ link $r_1$.\
 and so on.
 
 =
@@ -47,19 +47,19 @@ and so on.
   use quickselection find the element which has rank $floor((k-1)/2)*n/k$ in O(n) time.\
   that will split the array into two parts, $S_1$ is smaller than the element, and $S_2$ is larger than the element, and they have same size\
 - step2:
-  repeat use step1 to get all the elements in $S_1$ and $S_2$ in O(n) time.:
-    find from $(n/k)$ to $(floor((k-1)/2)-1)*n/k$  from $S_1$,
+  repeat use step1 to get all the elements in $S_1$ and $S_2$ in O(n) time.:\
+    find from $(n/k)$ to $(floor((k-1)/2)-1)*n/k$  from $S_1$,\
     find from $(floor((k-1)/2)-1)*n/k$  to $floor(k-1)*n/k$ from $S_2$.
 
 - time compelexity:\
   $T(n) = 2 T(n/2)+O(n)$, for $n>k$
   => $O(n log(k))$
-- example:
-  array = [5,6,7,8,9,0,1,2,3,4]
-  k=3
-  get target[3,6] by array[ $i*n/k=3$ for i in range(1,k)]
-  get 6,[0,1,2,3,4,5],[7,8,9] by quickSelection target[floor(len(target)/2)]
-  get 3,[0,1,2], [4,5] by quickSelection target[floor(floor(len(target)/2)/2)]
+- example:\
+  array = [5,6,7,8,9,0,1,2,3,4]\
+  k=3\
+  get target[3,6] by array[ $i*n/k=3$ for i in range(1,k)]\
+  get 6,[0,1,2,3,4,5],[7,8,9] by quickSelection target[floor(len(target)/2)]\
+  get 3,[0,1,2], [4,5] by quickSelection target[floor(floor(len(target)/2)/2)]\
   no other index in target, return [3,6]
 ```python
 
