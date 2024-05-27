@@ -8,7 +8,7 @@ when all element place in the same bucket,\
  and the bucket is sorted by selection sort,\
   then the time complexity is $Theta(n^2)$\
 == simple change make worst case time complexity to $O(n log(n))$
-use quick sort to sort the bucket, \
+use merge sort to sort the bucket, \
 then the worst-case time complexity is $O(n log(n))$
 
 =
@@ -20,7 +20,7 @@ then get the max price in length n.\
 maxPriceInLength[n]
 for i in 1 to len(rod):
   for j in 1 to i:
-    maxPriceInLength[i] = max(maxPriceInLength[i], price[j] + maxPriceInLength[i-j])
+    maxPriceInLength[i] = max(maxPriceInLength[i], price[j] + maxPriceInLength[i-j]+cuttingCost)
 return maxPriceInLength[n]
 ```
 == time complexity
@@ -29,10 +29,23 @@ $O(n^2)$
 
 
 =
-input is length n\
-split the input into A[0,i] and A[i+1,n]\
-then for each char in A[0,i] find the mirror char in A[i+1,n] -> O(n^2)\
-i can at from 0 to n-1 -> O(n)
+
+```python
+let dp[n][n] =[ -1 for every cell]
+function lps(string s1, string s2, int n1, int n2):
+  if n1==0 or n2==0:
+    return 0
+  if dp[n1][n2] != -1:
+    return dp[n1][n2]
+  if s1[n1-1] == s2[n2-1]:
+    dp[n1][n2] = 1+lps(s1,s2,n1-1,n2-1)
+  else:
+    dp[n1][n2] = max(lps(s1,s2,n1-1,n2),lps(s1,s2,n1,n2-1))
+  return dp[n1][n2]
+
+input = input()
+ans = lps(input, input[::-1], len(input), len(input))
+```
 
 == time complexity
 $O(n)* O(n^2)=O(n^3)$
@@ -40,17 +53,21 @@ $O(n)* O(n^2)=O(n^3)$
 
 =
 == algorithm
-from last server $S_n$ to first server $S_1$,\
-for all Server $S_x$\
-if have copy then cost is 0\
-else \
-calculate the cost of place a copy and\
-the cost of get a copy from $S_j$ where have copy and closest,\
-then choose the minimum cost.\
+dp store when the max length is index, most min cost.
+```python
+dp[n]= []
+dp[0] = 0
+dp[1] = cost[1]
 
-it can keep last server position to boost speed
+for i in 2 to n:
+  dp[i] = inf
+  for j in 0 to i:
+    costJ = cost[i] + ((1+(i-j))*(i-j)/2) +dp[j]
+    dp[i] = min(dp[i], costJ)
 
+return dp[n]
+```
 
 == time complexity
-$O(n)$
+$O(n^2)$
 
