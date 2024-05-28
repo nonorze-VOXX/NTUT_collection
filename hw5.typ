@@ -48,7 +48,7 @@ ans = lps(input, input[::-1], len(input), len(input))
 ```
 
 == time complexity
-$O(n)* O(n^2)=O(n^3)$
+$O(n^2)$
 
 
 =
