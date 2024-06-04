@@ -31,20 +31,18 @@ $O(n^2)$
 =
 
 ```python
-let dp[n][n] =[ -1 for every cell]
-function lps(string s1, string s2, int n1, int n2):
-  if n1==0 or n2==0:
-    return 0
-  if dp[n1][n2] != -1:
-    return dp[n1][n2]
-  if s1[n1-1] == s2[n2-1]:
-    dp[n1][n2] = 1+lps(s1,s2,n1-1,n2-1)
-  else:
-    dp[n1][n2] = max(lps(s1,s2,n1-1,n2),lps(s1,s2,n1,n2-1))
-  return dp[n1][n2]
-
-input = input()
-ans = lps(input, input[::-1], len(input), len(input))
+cin = input()
+dp = [['' for i in range(len(cin))] for j in range(len(cin))]
+for i in range(len(cin)):
+    dp[i][i] = cin[i]
+for i in range(len(cin)-1, -1, -1):
+    for j in range(i+1, len(cin)):
+        if cin[i] == cin[j]:
+            dp[i][j] = cin[i] + dp[i+1][j-1] + cin[j]
+        else:
+            dp[i][j] = max(dp[i+1][j], dp[i][j-1], key=len)
+maxLength = len(dp[0][len(cin)-1])
+maxpalindrome = dp[0][len(cin)-1]
 ```
 
 == time complexity
