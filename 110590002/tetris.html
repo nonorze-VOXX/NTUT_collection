@@ -1,0 +1,525 @@
+<html>
+
+<head>
+    <title>mid exam</title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="./midstyle.css">
+</head>
+
+<body>
+    <script src="./tetris.js"></script>
+    <canvas width="320" height="640" id="game" style="border:1px solid black"></canvas>
+
+    </div>
+    <script>
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function getPosition(element) {
+            let x = 0;
+            let y = 0;
+            //x += element.offsetLeft - element.scrollLeft + element.clientLeft;
+            //y += element.offsetTop - element.scrollLeft + element.clientTop;
+            x = element.offsetLeft;
+            y = element.offsetTop;
+            return { x: x, y: y };
+        }
+        let playArea = [];
+        for (let i = -5; i < 20; i++) {
+            playArea[i] = [];
+            for (let j = 0; j < 10; j++) {
+                playArea[i][j] = 0;
+            }
+        }
+        const ShapeList = ['C', 'S', 'I', 'E', 'O', 'T', 'L', 'Z', 'I'];
+
+        function rotate(matrix) {
+            const N = matrix.length - 1;
+            const result = matrix.map((row, i) =>
+                row.map((val, j) => matrix[N - j][i])
+            );
+
+            return result;
+        }
+        const allSquare = {
+            'C': [
+                [1, 1, 1, 1],
+                [1, 0, 0, 0],
+                [1, 0, 0, 0],
+                [1, 1, 1, 1],
+            ],
+            'S': [
+                [0, 1, 1, 1, 0],
+                [0, 1, 0, 0, 0],
+                [0, 1, 1, 1, 0],
+                [0, 0, 0, 1, 0],
+                [0, 1, 1, 1, 0],
+            ],
+            'I': [
+                [0, 0, 1, 0],
+                [0, 0, 1, 0],
+                [0, 0, 1, 0],
+                [0, 0, 1, 0],
+            ],
+            'E': [
+                [0, 1, 1, 1, 0],
+                [0, 1, 0, 0, 0],
+                [0, 1, 1, 1, 0],
+                [0, 1, 0, 0, 0],
+                [0, 1, 1, 1, 0],
+            ],
+            'T': [
+                [0, 1, 0],
+                [0, 1, 1],
+                [0, 1, 0],
+            ],
+            'O': [
+                [1, 1],
+                [1, 1],
+            ],
+            'Z': [
+                [1, 0, 0],
+                [1, 1, 0],
+                [0, 1, 0],
+            ],
+            'L': [
+                [0, 1, 0],
+                [0, 1, 0],
+                [1, 1, 0],
+            ],
+
+        };
+        const allColor = {
+            'C': 'blue',
+            'I': 'cyan',
+            'E': 'green',
+            'S': 'red',
+            'O': 'yellow',
+            'T': 'pink',
+            'L': 'orange',
+            'Z': 'green',
+        }
+        var grid = 32;
+        const c = document.getElementById("game");
+        const ctx = c.getContext('2d');
+        let Score = 0;
+        let pause = false;
+        let activeSquare = [];
+        let NowSelect = null;
+        function square(shape) {
+            this.shape = shape;
+            this.color = allColor[shape];
+            this.metrix = allSquare[shape];
+            this.select = false;
+
+            this.x = grid * 3;
+            this.y = -2 * grid;
+            this.width = allSquare[this.shape].length;
+            this.height = allSquare[this.shape].length;
+            this.Getwidth = function () {
+                console.log(this.metrix);
+                let ansWidth = 0;
+                let ansmin = 10;
+                let ansMax = 0;
+                for (let i = 0; i < allSquare[this.shape].length; i++) {
+                    let min = 0;
+                    let max = 0;
+                    let flag = true;
+                    let flagMax = true;
+                    for (let j = 0; j < this.metrix[0].length; j++) {
+                        if (flag && this.metrix[i][j] != 0) {
+                            min = j;
+                            flag = false;
+                        }
+                        if (flagMax && this.metrix[i][allSquare[this.shape][0].length - j - 1] != 0) {
+                            max = this.metrix[0].length - j - 1;
+                            flagMax = false;
+                        }
+                    }
+                    if (max - min + 1 > ansWidth) {
+                        ansWidth = max - min + 1;
+                    }
+                    if (max > ansMax) {
+                        ansMax = max;
+                    }
+                    if (min < ansmin) {
+                        ansmin = min;
+                    }
+                }
+
+                return { max: ansMax, min: ansmin };
+
+            };
+            this.Getheight = function () {
+                let ansWidth = 0;
+                let ansmin = 10;
+                let ansMax = 0;
+                for (let i = 0; i < allSquare[this.shape][0].length; i++) {
+                    let min = 0;
+                    let max = 0;
+                    let flag = true;
+                    let flagMax = true;
+                    for (let j = 0; j < allSquare[this.shape].length; j++) {
+                        if (flag && allSquare[this.shape][j][i] != 0) {
+                            min = j;
+                            flag = false;
+                        }
+                        if (flagMax && allSquare[this.shape][allSquare[this.shape][0].length - j - 1][i] != 0) {
+                            max = allSquare[this.shape][0].length - j - 1;
+                            flagMax = false;
+                        }
+                    }
+                    if (max - min + 1 > ansWidth) {
+                        ansWidth = max - min + 1;
+                    }
+                    if (max > ansMax) {
+                        ansMax = max;
+                    }
+                    if (min < ansmin) {
+                        ansmin = min;
+                    }
+                }
+                return { max: ansMax, min: ansmin };
+
+            };
+            this.checkBeClick = function (x, y) {
+                deltay = this.y - y;
+                if (x > this.x && x < this.x + grid * this.width && y > this.y && y < this.y + this.height * grid) {
+                    this.select = true;
+                    //select this
+                } else {
+                    this.select = false;
+                }
+            }
+            this.SetMetrix = function (newMetrix) {
+                this.metrix = newMetrix;
+            }
+            this.update = function () {
+                //this.y += grid;
+                if (this.select) {
+                    drawBorder(this);
+                    NowSelect = this;
+                } else {
+
+                }
+                if (this.y + grid * this.height < c.height) {
+                    if (checkMove(changeToFieldMetrix(this))) {
+                    } else {
+                        this.y -= grid;
+                        Place(this);
+                    }
+                    this.y += grid;
+                    if (checkMove(changeToFieldMetrix(this))) {
+                    } else {
+                        this.y -= grid;
+                        Place(this);
+                    }
+                } else {
+                    Place(this);
+                }
+
+            }
+
+        };
+        function drawBorder(element) {
+
+            if (element) {
+                width = 8;
+
+                ctx.beginPath();
+                ctx.lineTo(element.x + element.Getwidth().min * grid - width, element.y - width / 2);
+                ctx.lineTo(element.x + (element.Getwidth().max + 1) * grid + width / 2, element.y - width / 2);
+                ctx.lineTo(element.x + (element.Getwidth().max + 1) * grid + width / 2, element.y + element.height * grid + width / 2);
+                ctx.lineTo(element.x + element.Getwidth().min * grid - width, element.y + element.height * grid + width / 2);
+                ctx.lineTo(element.x + element.Getwidth().min * grid - width, element.y - width);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = width;
+                ctx.stroke();
+                /*
+                width = 8;
+
+                ctx.beginPath();
+                ctx.lineTo(element.x - element.width / 2, element.y - width / 2);
+                ctx.lineTo(element.x + element.width * grid + width / 2, element.y - width / 2);
+                ctx.lineTo(element.x + element.width * grid + width / 2, element.y + element.height * grid + width / 2);
+                ctx.lineTo(element.x - width / 2, element.y + element.height * grid + width / 2);
+                ctx.lineTo(element.x - width / 2, element.y - width);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = width;
+                ctx.stroke();
+
+                */
+            }
+        }
+
+        function changeToFieldMetrix(element) {
+            let CanvasPosition = getPosition(document.getElementById('game'));
+            let x = (element.x) / grid;// + CanvasPosition.x) / grid;
+            let y = (element.y) / grid;//+ CanvasPosition.y) / grid;
+            let ans = [];
+
+
+
+            for (let i = 0; i < 20; i++) {
+                ans[i] = [];
+                for (let j = 0; j < 10; j++) {
+                    if (j >= x && j < x + element.width && i >= y && i < y + element.height) {
+                        ans[i][j] = element.metrix[i - y][j - x];
+                    } else {
+                        ans[i][j] = 0;
+                    }
+                }
+            }
+            return ans;
+        }
+        function checkMove(metrix) {
+            if (metrix === false) {
+                return false;
+            }
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (metrix[i][j] != 0 && playArea[i][j] != 0) {
+                        return false
+                    }
+                }
+            }
+            return true;
+        }
+        function Place(element) {
+            activeSquare.shift();
+            if (NowSelect == element) {
+                NowSelect = null;
+            }
+            activeSquare[0].update();
+        }
+        /*
+        function Place(element) {
+            if (element.y < 0) {
+                lose();
+            }
+            let target = changeToFieldMetrix(element);
+
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (target[i][j] == 1) {
+                        playArea[i][j] = element.shape;
+                    }
+                }
+            }
+            for (let i = 0; i < activeSquare.length; i++) {
+                if (activeSquare[i] === element) {
+                    activeSquare.splice(i, 1);
+                    if (activeSquare.length > i) {
+                        activeSquare[i].update();
+                    }
+                    break;
+                }
+            }
+            NowSelect = null;
+        }
+        */
+
+
+        document.addEventListener('click', function (e) {
+            CanvasPosition = getPosition(this.getElementById('game'));
+            activeSquare.forEach(NextSquare => {
+                NextSquare.checkBeClick(e.clientX - CanvasPosition.x, e.clientY - CanvasPosition.y);
+
+            });
+        })
+
+
+        function printPlayArea() {
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (playArea[i][j] != 0) {
+                        ctx.fillStyle = allColor[playArea[i][j]];
+                        ctx.fillRect(grid * i, j * grid, 32, 32);
+                    }
+                }
+            }
+        }
+        function MoveSquare(leftorright) {
+            if (NowSelect) {
+                if (leftorright == 'right') {
+                    NowSelect.x += grid;
+                    if (NowSelect.x / grid + NowSelect.Getwidth().max < 10) {
+
+                        if (checkMove(changeToFieldMetrix(NowSelect))) {
+                        } else {
+                            NowSelect.x -= grid;
+
+                        }
+                    } else {
+
+                        NowSelect.x -= grid;
+                    }
+
+                } else if (leftorright == 'left') {
+                    NowSelect.x -= grid;
+                    if (NowSelect.x / grid + NowSelect.Getwidth().min >= 0) {
+                        if (checkMove(changeToFieldMetrix(NowSelect))) {
+                        } else {
+                            NowSelect.x += grid;
+
+                        }
+                    } else {
+                        NowSelect.x += grid;
+
+                    }
+                }
+
+            }
+        }
+        let NextTime = 0;
+        let frameCounter = 0;
+        let NextShapeCount = 0;
+        function drawScore() {
+
+            ctx.beginPath();
+            ctx.font = "50px Arial";
+            ctx.fillStyle = 'green';
+            ctx.fill();
+            ctx.fillText("Score:" + Score, 50, 80);
+            ctx.stroke();
+        }
+        function lose() {
+
+            stop();
+            ctx.beginPath();
+            ctx.font = "80px Arial";
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.fillText("lose", 100, 80);
+            ctx.stroke();
+        }
+        function checkGameArea() {
+            for (let i = -5; i < 0; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (playArea[i][j] != 0) {
+                        lose();
+                        return;
+                    }
+                }
+            }
+
+            for (let i = 0; i < 20; i++) {
+                let flag = true;
+                for (let j = 0; j < 10; j++) {
+                    if (playArea[i][j] == 0) {
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    playArea.splice(i);
+                    playArea.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+                }
+            }
+
+        }
+        function stop() {
+            pause = !pause;
+        }
+        let firstFour = 0;
+        function clearGameArea() {
+            Score = 0;
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 10; j++) {
+                    playArea[i][j] = 0;
+                }
+            }
+            NowSelect = null;
+            activeSquare = [];
+            pause = false;
+            firstFour = 0;
+
+        }
+        function rotateSquare() {
+            if (NowSelect) {
+                NowSelect.SetMetrix(rotate(NowSelect.metrix));
+                console.log(NowSelect.x / grid, NowSelect.Getwidth().min);
+                if (NowSelect.x / grid + NowSelect.Getwidth().max >= 10) {
+                    NowSelect.x -= grid * (NowSelect.x / grid + NowSelect.Getwidth().max - 9);
+                } else if (NowSelect.x / grid + NowSelect.Getwidth().min < 0) {
+                    NowSelect.x += grid * (0 - NowSelect.x / grid + NowSelect.Getwidth().min);
+                } else {
+
+                }
+            }
+        }
+
+        function loop() {
+
+            if (pause) {
+
+            } else {
+                frameCounter += 1;
+                if (activeSquare.length === 0 || NextTime == 5) {
+                    if (firstFour < 4) {
+                        firstFour += 1;
+                        activeSquare.push(new square(ShapeList[NextShapeCount]));
+                        NextShapeCount += 1;
+                    } else {
+                        NextShapeCount = getRandomInt(5, ShapeList.length - 1);
+                        activeSquare.push(new square(ShapeList[NextShapeCount]));
+                    }
+                    Score += 1;
+                    NextTime = 0;
+
+                }
+
+                if (frameCounter == 36) {
+                    activeSquare.forEach(element => {
+                        element.update();
+                    })
+                    frameCounter = 0;
+                    NextTime += 1;
+                }
+                ctx.clearRect(0, 0, c.width, c.height);
+                activeSquare.forEach(element => {
+                    ctx.fillStyle = element.color;
+                    for (let i = 0; i < element.height; i++) {
+                        for (let j = 0; j < element.width; j++) {
+                            if (element.metrix[i][j] == 1) {
+                                ctx.fillRect(element.x + j * grid, element.y + i * grid, grid - 1, grid - 1);
+                            }
+                        }
+                    }
+
+                });
+                drawScore();
+                drawBorder(NowSelect);
+                for (let i = 0; i < 20; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        if (playArea[i][j] != 0) {
+                            ctx.fillStyle = allColor[playArea[i][j]];
+                            ctx.fillRect(j * grid, i * grid, grid - 1, grid - 1);
+                        }
+                    }
+                }
+
+                checkGameArea();
+
+            }
+            rAF = requestAnimationFrame(loop);
+
+        }
+        rAF = requestAnimationFrame(loop);
+
+
+    </script>
+    <br>
+    <div>
+        <button onclick="stop()">▷</button>
+        <button onclick="MoveSquare('left')">◄</button>
+        <button onclick="MoveSquare('right')">►</button>
+        <button onclick="rotateSquare()">rotate</button>
+        <button onclick="clearGameArea()">reset</button>
+    </div>
+</body>
+
+</html>
