@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body onload="startGame()">
+    <script>
+
+        var redGamePiece, blueGamePiece, yellowGamePiece;
+
+        function startGame() {
+            redGamePiece = new component(75, 75, "red", 10, 10);
+            yellowGamePiece = new component(75, 75, "yellow", 50, 60);
+            blueGamePiece = new component(75, 75, "blue", 10, 220);
+            blueGamePiece.deltay *= -1;
+            myGameArea.start();
+        }
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 480;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.deltax = 2;
+            this.deltay = 2;
+            this.update = function () {
+                ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        function updateGameArea() {
+            myGameArea.clear();
+            if (redGamePiece.x == 400) {
+                redGamePiece.deltax = -20;
+            }
+            if (redGamePiece.x == 0) {
+                redGamePiece.deltax = 20;
+            }
+            redGamePiece.x += redGamePiece.deltax;
+
+            if (yellowGamePiece.x == 400) {
+                yellowGamePiece.deltax = -2;
+            }
+            if (yellowGamePiece.x == 0) {
+                yellowGamePiece.deltax = 2;
+            }
+            if (yellowGamePiece.y == 190) {
+                yellowGamePiece.deltay = -2;
+            }
+            if (yellowGamePiece.y == 0) {
+                yellowGamePiece.deltay = 2;
+            }
+            yellowGamePiece.x += yellowGamePiece.deltax;
+            yellowGamePiece.y += yellowGamePiece.deltay;
+            if (blueGamePiece.x == 400) {
+                blueGamePiece.deltax = -2;
+            }
+            if (blueGamePiece.x == 0) {
+                blueGamePiece.deltax = 2;
+            }
+            if (blueGamePiece.y == 190) {
+                blueGamePiece.deltay = -2;
+            }
+            if (blueGamePiece.y == 0) {
+                blueGamePiece.deltay = 2;
+            }
+            blueGamePiece.x += blueGamePiece.deltax;
+            blueGamePiece.y += blueGamePiece.deltay;
+            redGamePiece.update();
+            yellowGamePiece.update();
+            blueGamePiece.update();
+        }
+    </script>
+</body>
+
+</html>
