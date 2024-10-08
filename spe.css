@@ -1,6 +1,7 @@
 body {
     background:black;
-    width:80%
+    left-padding:10%;
+    right-padding:10%;
 }
 p{
     align:justify;
