@@ -39,16 +39,60 @@
         }
 
         function component(width, height, color, x, y) {
+            this.initWidth = width;
+            this.initHeight = height;
+            this.initx = x;
+            this.inity = y;
             this.width = width;
             this.height = height;
             this.x = x;
             this.y = y;
+            this.stoptmpx = 0;
+            this.stoptmpy = 0;
             this.deltax = 2;
             this.deltay = 2;
             this.update = function () {
                 ctx = myGameArea.context;
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            this.start = function () {
+                if (this.deltax == 0) {
+                    var tmp = this.deltax;
+                    this.deltax = this.stoptmpx;
+                    this.stoptmpx = tmp;
+
+                    var tmp1 = this.deltay;
+                    this.deltay = this.stoptmpy;
+                    this.stoptmpy = tmp1;
+
+                }
+            }
+            this.stop = function () {
+                if (this.deltax != 0 && this.stoptmpx != 0) {
+                    this.stoptmpx = 0;
+                }
+                if (this.deltay != 0 && this.stoptmpy != 0) {
+                    this.stoptmpy = 0;
+                }
+                var tmp = this.deltax;
+                this.deltax = this.stoptmpx;
+                this.stoptmpx = tmp;
+
+                tmp = this.deltay;
+                this.deltay = this.stoptmpy;
+                this.stoptmpy = tmp;
+            }
+            this.reset = function () {
+                this.x = this.initx;
+                this.y = this.inity;
+                this.width = this.initWidth;
+                this.height = this.initHeight;
+                this.deltax = 2;
+                this.deltay = 2;
+                this.stoptmpx = 0;
+                this.stoptmpy = 0;
+
             }
         }
 
@@ -93,8 +137,14 @@
             redGamePiece.update();
             yellowGamePiece.update();
             blueGamePiece.update();
+
         }
     </script>
+
+    <button onclick="redGamePiece.start();blueGamePiece.start();yellowGamePiece.start()">start</button>
+    <button onclick="redGamePiece.stop();blueGamePiece.stop();yellowGamePiece.stop()">stop</button>
+    <button
+        onclick="redGamePiece.reset();blueGamePiece.reset();yellowGamePiece.reset(); blueGamePiece.deltay*=-1">reset</button>
 </body>
 
 </html>
