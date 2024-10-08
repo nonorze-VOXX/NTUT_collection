@@ -1,0 +1,15 @@
+name = str(input())
+sid = int(input())
+a_score=int(input())
+b_score = int(input())
+c_score = int(input())
+sumScore =a_score+b_score+c_score
+ava=sumScore/3
+print('Name:',end='')
+print(name)
+print('ID:',end='')
+print(sid)
+print('Average:',end='')
+print("{:g}".format(ava))
+print('Total:',end='')
+print(sumScore)
