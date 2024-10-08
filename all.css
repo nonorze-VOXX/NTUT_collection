@@ -1,0 +1,77 @@
+body {
+    background: #ccccff;
+    text-align: center;
+}
+
+.leftHalf {
+    width: 40%;
+    float: left;
+}
+
+.rightHalf {
+    float: right;
+    width: 50%;
+}
+
+.bold {
+    font: bold;
+    font-size: 25px;
+}
+
+img.headPicture {
+    border-radius: 50%;
+}
+
+.italic {
+    font-size: 15px;
+    font: itali c;
+}
+
+.underline {
+    font-size: 20px;
+}
+
+.link_Area {
+    border-style: double;
+}
+
+.box {
+    margin-left: 10%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10%;
+    border-style: double;
+}
+
+.big {
+    font-size: 200px;
+}
+
+hr.new5 {
+    border: 10px soli d green;
+    border-radius: 5px;
+}
+
+ul.topbar {
+    background-color: blue;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin: 25px;
+}
+
+.orangetext {
+    color: orange;
+}
+
+table.border {
+    border-color: brown;
+    border-width: thick;
+    border-style: solid;
+}
+
+img.filter {
+    border-color: brown;
+    border-width: thick;
+    border-style: solid;
+    filter: sepia(100%);
+}
