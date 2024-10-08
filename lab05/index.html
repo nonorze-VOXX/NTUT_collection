@@ -1,0 +1,64 @@
+<!-- HTML Lab Assignment 5 -->
+<!-- Deadline: 2022-11-09 23:59 -->
+
+<!-- [10%] 1. A Table (3x3 cells) with two different background colors for <th> and <td> -->
+<!-- [20%] 2. Two buttons to control the width of the table (200px, 500 px) -->
+<!-- [20%] 3. Three buttons to control the border with and cell spacing of the table -->
+<!-- [20%] 4. Four buttons to control the background color of the table (will not affect the color of table headings)-->
+<!-- [20%] 5. A reset button to reset the style to the original.-->
+<!-- [10%] 6. Separate the JavaScript code from the html file and upload both files to github. (javascript in an external file) -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <script src="./script.js"></script>
+    <!-- Write your Html code here -->
+    <table id="lab5Table" class="lab5" width="400">
+        <tr>
+            <th class="lab5"> Math</th>
+            <th class="lab5"> English</th>
+            <th class="lab5"> Programming</th>
+        </tr>
+        <tr>
+            <td> 90</td>
+            <td> 60</td>
+            <td> 80</td>
+        </tr>
+        <tr>
+            <td> 80</td>
+            <td> 86</td>
+            <td> 98</td>
+        </tr>
+    </table>
+    <div>
+        Change The Table width
+        <br>
+        <button onclick="changeWidth(200)">200px</button>
+        <button onclick="changeWidth(500)">500px</button>
+    </div>
+    <div>
+        Change border
+        <br>
+        <button onclick="changeBorder(1)">1px</button>
+        <button onclick="changeBorder(10)">10px</button>
+        <button onclick="changeBorder(20)">20px</button>
+    </div>
+    <div>
+        Change The Table width
+        <br>
+        <button onclick="changeBackGround('cadetblue')" class="box cadetblue"> </button>
+        <button onclick="changeBackGround('darkSalmon')" class="box darksalmon"> </button>
+        <button onclick="changeBackGround('aquamarine')" class="box aquamarine"> </button>
+        <button onclick="changeBackGround('thistle')" class="box thistle"> </button>
+    </div>
+    <br>
+    <button onclick="Reset()">Reset</button>
+
+</body>
+
+</html>
