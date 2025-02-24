@@ -19,7 +19,7 @@ def filter_chars_and_normalize(str_data):
     Takes a string and returns a copy with all nonalphanumeric 
     chars replaced by white space
     """
-    pattern = re.compile('[\W_]+')
+    pattern = re.compile(r'[\W_]+')
     return pattern.sub(' ', str_data).lower()
 
 def scan(str_data):
