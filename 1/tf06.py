@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import sys, re, operator, string
+import sys, re, operator
+import string
 
 #
 # The functions
@@ -33,14 +34,13 @@ def remove_stop_words(word_list):
     Takes a list of words and returns a copy with all stop 
     words removed 
     """
-    def inner_func(path_to_stop_words_file = '../stop_words.txt'):
+    def filter_stop_words(path_to_stop_words_file = '../stop_words.txt'):
         with open(path_to_stop_words_file) as f:
             stop_words = f.read().split(',')
-
-    # add single-letter words
+        # add single-letter words
         stop_words.extend(list(string.ascii_lowercase))
         return [w for w in word_list if not w in stop_words]
-    return inner_func
+    return filter_stop_words
 
 def frequencies(word_list):
     """
@@ -71,7 +71,9 @@ def print_all(word_freqs):
         print(word_freqs[0][0], '-', word_freqs[0][1])
         print_all(word_freqs[1:])
 
+
 #
 # The main function
 #
-print_all(sort(frequencies(remove_stop_words(scan(filter_chars_and_normalize(read_file(sys.argv[1]))))(sys.argv[2])))[0:25])
+if __name__ == "__main__":
+    print_all(sort(frequencies(remove_stop_words(scan(filter_chars_and_normalize(read_file(sys.argv[1]))))(sys.argv[2])))[0:25])
