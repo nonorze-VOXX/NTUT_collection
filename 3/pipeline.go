@@ -26,8 +26,8 @@ func scan(str_data string) []string {
 	return strings.Fields(str_data)
 }
 
-func remove_stop_words(word_list []string) []string {
-	stop_words_data, err := os.ReadFile("../stop_words.txt")
+func remove_stop_words(word_list []string, path string) []string {
+	stop_words_data, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Println("Error reading stop words file:", err)
 		os.Exit(1)
@@ -99,7 +99,7 @@ func main() {
 	text := read_file(file_path)
 	filtered_text := filter_chars_and_normalize(text)
 	words := scan(filtered_text)
-	words = remove_stop_words(words)
+	words = remove_stop_words(words, "../stop_words.txt")
 	word_freqs := frequencies(words)
 	sorted_word_freqs := sort_freq(word_freqs)
 	print_all(sorted_word_freqs[:25])
