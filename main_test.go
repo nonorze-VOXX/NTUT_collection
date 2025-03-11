@@ -5,14 +5,6 @@ import (
 	"testing"
 )
 
-func TestGetClassName(t *testing.T) {
-	var i interface{}
-	i = DataStorageManager{}
-	if getClassName(i) != "DataStorageManager" {
-		t.Error("Expected DataStorageManager")
-	}
-}
-
 func setup(content string) string {
 	// Create temporary test file
 	tmpfile, err := os.CreateTemp("", "test.*.txt")
@@ -34,8 +26,7 @@ func TestDsmInit(t *testing.T) {
 	filename := setup("This is a test")
 	defer cleanup(filename)
 
-	dsm := DataStorageManager{}
-	dsm = dsm.Init(filename)
+	dsm := NewDataStorageManager(filename)
 	expect := "this is a test"
 	if dsm.data != expect {
 		t.Error("Expected " + expect)
@@ -46,10 +37,11 @@ func TestDsmInfo(t *testing.T) {
 	filename := setup("This is a test")
 	defer cleanup(filename)
 
-	dsm := DataStorageManager{}.Init(filename)
-	expect := "DataStorageManager: My major data structure is a string"
+	dsm := NewDataStorageManager(filename)
+	expect := "main.DataStorageManager: My major data structure is a string"
 	if dsm.Info() != expect {
 		t.Error("Expected " + expect)
+		t.Error("real " + dsm.Info())
 	}
 }
 
@@ -57,7 +49,7 @@ func TestDsmWords(t *testing.T) {
 	filename := setup("This is a test")
 	defer cleanup(filename)
 
-	dsm := DataStorageManager{}.Init(filename)
+	dsm := NewDataStorageManager(filename)
 	expect := []string{"this", "is", "a", "test"}
 	if len(dsm.Words()) != len(expect) {
 		t.Error("Expected", expect)
@@ -73,7 +65,7 @@ func TestSwmInit(t *testing.T) {
 	filename := setup("stop,word")
 	defer cleanup(filename)
 
-	swm := StopWordManager{}.Init(filename)
+	swm := NewStopWordManager(filename)
 	if len(swm.stopWords) != 28 {
 		t.Error("Expected length", 28)
 	}
@@ -91,10 +83,10 @@ func TestSwmInit(t *testing.T) {
 func TestSwmIsStopWord(t *testing.T) {
 	filename := setup("stop,word")
 	defer cleanup(filename)
-	if !(StopWordManager{}.Init(filename)).IsStopWord("stop") {
+	if !(NewStopWordManager(filename)).IsStopWord("stop") {
 		t.Error("Expected stop word in stopwords")
 	}
-	if !(StopWordManager{}.Init(filename)).IsStopWord("a") {
+	if !(NewStopWordManager(filename)).IsStopWord("a") {
 		t.Error("Expected a word in stopwords")
 	}
 }
@@ -103,8 +95,8 @@ func TestSwmInfo(t *testing.T) {
 	filename := setup("stop,word")
 	defer cleanup(filename)
 
-	swm := StopWordManager{}.Init(filename)
-	expect := "StopWordManager: My major data structure is a []string"
+	swm := NewStopWordManager(filename)
+	expect := "main.StopWordManager: My major data structure is a []string"
 	if swm.Info() != expect {
 		t.Error("Expected " + expect)
 	}
