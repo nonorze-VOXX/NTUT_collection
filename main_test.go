@@ -68,3 +68,22 @@ func TestDsmWords(t *testing.T) {
 		}
 	}
 }
+
+func TestSwmInit(t *testing.T) {
+	filename := setup("stop,word")
+	defer cleanup(filename)
+
+	swm := StopWordManager{}.Init(filename)
+	if len(swm.stopWords) != 28 {
+		t.Error("Expected length", 28)
+	}
+	var expect = [28]string{"stop", "word", "a", "b", "c",
+		"d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+		"n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
+		"x", "y", "z"}
+	for i, word := range expect {
+		if word != swm.stopWords[i] {
+			t.Error("Expected", word)
+		}
+	}
+}

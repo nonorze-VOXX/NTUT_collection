@@ -1,1 +1,1 @@
-Sotp wopr word
+Sotp,wopr,word

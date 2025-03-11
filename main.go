@@ -50,14 +50,27 @@ func (dsm DataStorageManager) Words() []string {
 	return strings.Fields(dsm.data)
 }
 
+type StopWordManager struct {
+	super     TFExercise
+	stopWords []string
+}
+
+func NewStopWordManager(path string) StopWordManager {
+	return StopWordManager{}.Init(path)
+}
+func (swm StopWordManager) Init(path string) StopWordManager {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("File reading error", err)
+	}
+	swm.stopWords = strings.Split(string(data), ",")
+	for ch := 'a'; ch <= 'z'; ch++ {
+		swm.stopWords = append(swm.stopWords, string(ch))
+	}
+	swm.super = TFExerciseImpl{child: swm}
+	return swm
+}
+
 func main() {
 
-	var A TFExercise
-	t := NewDataStorageManager("stop_words.txt")
-	fmt.Println(t.data)
-	A = t
-	fmt.Println(A.Info())
-	fmt.Println(t.Words())
-
-	fmt.Println("Hello, World!")
 }
