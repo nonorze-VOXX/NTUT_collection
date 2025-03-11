@@ -87,3 +87,25 @@ func TestSwmInit(t *testing.T) {
 		}
 	}
 }
+
+func TestSwmIsStopWord(t *testing.T) {
+	filename := setup("stop,word")
+	defer cleanup(filename)
+	if !(StopWordManager{}.Init(filename)).IsStopWord("stop") {
+		t.Error("Expected stop word in stopwords")
+	}
+	if !(StopWordManager{}.Init(filename)).IsStopWord("a") {
+		t.Error("Expected a word in stopwords")
+	}
+}
+
+func TestSwmInfo(t *testing.T) {
+	filename := setup("stop,word")
+	defer cleanup(filename)
+
+	swm := StopWordManager{}.Init(filename)
+	expect := "StopWordManager: My major data structure is a []string"
+	if swm.Info() != expect {
+		t.Error("Expected " + expect)
+	}
+}

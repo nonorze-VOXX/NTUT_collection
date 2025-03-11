@@ -9,7 +9,12 @@ import (
 )
 
 func getClassName(i interface{}) string {
-	return reflect.TypeOf(i).Name()
+	name := reflect.TypeOf(i).Name()
+	if len(name) != 0 {
+		return name
+	}
+
+	return reflect.TypeOf(i).String()
 }
 
 type TFExercise interface {
@@ -69,6 +74,20 @@ func (swm StopWordManager) Init(path string) StopWordManager {
 	}
 	swm.super = TFExerciseImpl{child: swm}
 	return swm
+}
+func (swm StopWordManager) Info() string {
+	return swm.super.Info() +
+		": My major data structure is a " +
+		getClassName(swm.stopWords)
+}
+
+func (swm StopWordManager) IsStopWord(word string) bool {
+	for _, stopWord := range swm.stopWords {
+		if word == stopWord {
+			return true
+		}
+	}
+	return false
 }
 
 func main() {
