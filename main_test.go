@@ -36,8 +36,9 @@ func TestDsmInit(t *testing.T) {
 
 	dsm := DataStorageManager{}
 	dsm = dsm.Init(filename)
-	if dsm.data != "This is a test" {
-		t.Error("Expected 'This is a test'")
+	expect := "this is a test"
+	if dsm.data != expect {
+		t.Error("Expected " + expect)
 	}
 }
 
@@ -57,7 +58,7 @@ func TestDsmWords(t *testing.T) {
 	defer cleanup(filename)
 
 	dsm := DataStorageManager{}.Init(filename)
-	expect := []string{"This", "is", "a", "test"}
+	expect := []string{"this", "is", "a", "test"}
 	if len(dsm.Words()) != len(expect) {
 		t.Error("Expected", expect)
 	}

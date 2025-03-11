@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"reflect"
+	"regexp"
 	"strings"
 )
 
@@ -35,7 +36,7 @@ func (dsm DataStorageManager) Init(path string) DataStorageManager {
 	if err != nil {
 		fmt.Println("File reading error", err)
 	}
-	dsm.data = string(data)
+	dsm.data = strings.ToLower(regexp.MustCompile((`[\W_]+`)).ReplaceAllString(string(data), " "))
 	dsm.super = TFExerciseImpl{child: dsm}
 	return dsm
 }
