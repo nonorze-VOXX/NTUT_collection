@@ -141,8 +141,14 @@ func (wfc WordFrequencyController) Run() {
 		}
 	}
 	wordFreqs := wfc.WordFreqManager.Sorted()
-	for _, wf := range wordFreqs[:25] {
-		fmt.Println(wf.text, " - ", wf.count)
+	if len(wordFreqs) < 25 {
+		for _, wf := range wordFreqs {
+			fmt.Println(wf.text, " - ", wf.count)
+		}
+	} else {
+		for _, wf := range wordFreqs[:25] {
+			fmt.Println(wf.text, " - ", wf.count)
+		}
 	}
 }
 
