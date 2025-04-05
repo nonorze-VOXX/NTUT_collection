@@ -10,7 +10,10 @@ type DocumentGenerator interface {
 type BaseGenerator struct{ dg DocumentGenerator }
 
 func (bg BaseGenerator) Generate() string {
-	return bg.dg.Save(bg.dg.FormatContent(bg.dg.PrepareData()))
+
+	data := bg.dg.PrepareData()
+	formatData := bg.dg.FormatContent(data)
+	return bg.dg.Save(formatData)
 }
 
 type TextDocument struct{}
