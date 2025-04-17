@@ -8,4 +8,5 @@ WORKDIR /app
 COPY ./hw4 /app
 
 # Set the default command to run SWI-Prolog
-CMD ["swipl", "-f", "word_freq.pl", "word_freq_test.pl", "-g", "run_tests,halt"]
+# CMD ["swipl", "-f", "word_freq.pl"]
+CMD ["swipl", "-f", "word_freq.pl", "word_freq_test.pl"]
