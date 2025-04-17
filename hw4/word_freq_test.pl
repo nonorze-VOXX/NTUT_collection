@@ -14,5 +14,9 @@ test(filter_chars_and_normalize) :-
     filter_chars_and_normalize("This is a test, only a test.", FilteredText),
     Normalized ="this is a test only a test ".
 
+test(scan) :- 
+    scan("this is a test only a test ", WordList),
+    assertion(WordList \= []),
+    assertion(WordList == ["this", "is", "a", "test", "only", "a", "test"]).
 
 :- end_tests(word_freq_test).

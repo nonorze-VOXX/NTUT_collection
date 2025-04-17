@@ -25,3 +25,7 @@ inner_filter_chars_and_normalize([Char|Rest], [LowerChar|FilteredRest]) :-
     inner_filter_chars_and_normalize(Rest, FilteredRest). % Recurse for the rest
 inner_filter_chars_and_normalize([_|Rest], [' '|FilteredRest]) :-
     inner_filter_chars_and_normalize(Rest, FilteredRest). % Replace non-alphanumeric with a space
+
+scan(FilteredString, WordList) :-
+    split_string(FilteredString, " ", "", WL),
+    exclude(=(""), WL, WordList).
