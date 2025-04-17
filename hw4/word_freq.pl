@@ -29,3 +29,34 @@ inner_filter_chars_and_normalize([_|Rest], [' '|FilteredRest]) :-
 scan(FilteredString, WordList) :-
     split_string(FilteredString, " ", "", WL),
     exclude(=(""), WL, WordList).
+
+
+remove_stop_words([], _, []).
+remove_stop_words([Word|Words], StopWords, FilteredWords) :-
+    (member(Word, StopWords) ->
+        remove_stop_words(Words, StopWords, FilteredWords)
+    ;
+        FilteredWords = [Word|FilteredRest],
+        remove_stop_words(Words, StopWords, FilteredRest)
+    ).
+
+
+count(_, [], 1, []).
+count(_, [], Count, RemainingWords).
+count(Word, [Word|Words], Count, RemainingWords) :-
+    count(Word, Words, Count1, RemainingWords),
+    Count is Count1 + 1.
+count(Word, [Word1|Words], Count, [Word1|Rest]) :-
+    count(Word, Words, Count1, Rest),
+    Count is Count1 .
+
+frequencies([], []).
+frequencies([Word|Words], [Word-Count|Rest]) :-
+    count(Word, Words, Count, RemainingWords),
+    frequencies(RemainingWords, Rest).
+
+
+# sorted([], []).
+# sorted([Word-Count|Rest], Sorted) :-
+#     sorted(Rest, SortedRest),
+#     insert(Word-Count, SortedRest, Sorted).

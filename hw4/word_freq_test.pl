@@ -19,4 +19,36 @@ test(scan) :-
     assertion(WordList \= []),
     assertion(WordList == ["this", "is", "a", "test", "only", "a", "test"]).
 
+
+test(remove_stop_words) :-
+    remove_stop_words(["this","is","a","test","only","a","test"], ["a","is","the"], FilteredWordList),
+    assertion(FilteredWordList \= []),
+    assertion(FilteredWordList == ["this", "test", "only", "test"]).
+
+test(frequencies) :-
+    frequencies(["this","is","a","test","only","a","test"], WordFreq),
+    assertion(WordFreq \= []),
+    assertion(WordFreq == ["this"-1, "is"-1, "a"-2, "test"-2, "only"-1]).
+
+test(sorted) :-
+    sorted([ "only"-1,"test"-2], SortedWordList),
+    assertion(SortedWordList \= []),
+    assertion(SortedWordList == ["test"-2,"only"-1 ]).
+
+
+
+# input.txt:
+# This is a test, only a test.
+# ```
+
+# ```txt
+# tmp_stop_words.txt:
+# a,is,the
+# ```
+
+# ```prolog
+# ?- word_frequencies('input.txt', 'tmp_stop_words.txt').
+# test: 2
+# only: 1
+
 :- end_tests(word_freq_test).
