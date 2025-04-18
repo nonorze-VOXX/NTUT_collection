@@ -36,19 +36,4 @@ test(sorted) :-
     assertion(SortedWordList == ["test"-2,"only"-1 ]).
 
 
-
-# input.txt:
-# This is a test, only a test.
-# ```
-
-# ```txt
-# tmp_stop_words.txt:
-# a,is,the
-# ```
-
-# ```prolog
-# ?- word_frequencies('input.txt', 'tmp_stop_words.txt').
-# test: 2
-# only: 1
-
 :- end_tests(word_freq_test).

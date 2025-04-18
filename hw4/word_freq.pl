@@ -56,7 +56,38 @@ frequencies([Word|Words], [Word-Count|Rest]) :-
     frequencies(RemainingWords, Rest).
 
 
-# sorted([], []).
-# sorted([Word-Count|Rest], Sorted) :-
-#     sorted(Rest, SortedRest),
-#     insert(Word-Count, SortedRest, Sorted).
+sorted([], []).
+sorted(List, Sorted) :- 
+    merge_sort(List, Sorted).
+
+merge_sort([], []).
+merge_sort([X], [X]).
+merge_sort([W-C], [W-C]).
+merge_sort(List, Sorted) :-
+    divide(List, Left, Right),
+    merge_sort(Left, SortedLeft),
+    merge_sort(Right, SortedRight),
+    merge(SortedLeft, SortedRight, Sorted).
+
+merge([], List, List).
+merge(List, [], List).
+merge([WordX-CountX|T1],[WordY-CountY|T2], [WordX-CountX|T]) :- 
+    CountX>CountY,
+    merge(T1,[WordY-CountY|T2],T).
+merge([WordX-CountX|T1],[WordY-CountY|T2], [WordY-CountY|T]) :- 
+    CountX=<CountY,
+    merge([WordX-CountX|T1],T2,T).
+
+
+divide([],[],[]).
+divide([],L1,L2).
+divide([H|L],L1,[H|L2]):-
+    length([H|L], N),
+    N mod 2 =:= 0,
+    divide(L,L1,L2).
+
+divide([H|L],[H|L1],L2):-
+    length([H|L], N),
+    N mod 2 =:= 1,
+    divide(L,L1,L2).
+
