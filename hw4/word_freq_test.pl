@@ -5,10 +5,9 @@
 
 % Write test code here
 test(read_stop_words) :-
-    read_stop_words('stop_words.txt', StopWords),
-    assertion(StopWords \= []),
-    assertion(member('the', StopWords)),
-    assertion(member('wants', StopWords)).
+    read_stop_words('tmp_stop_words.txt', StopWords),
+    StopWords = ["a","is","the","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"].
+
 
 test(filter_chars_and_normalize) :-
     filter_chars_and_normalize("This is a test, only a test.", FilteredText),
