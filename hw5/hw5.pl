@@ -24,19 +24,25 @@ new_instance(_, Class) :-
     fail.
 
 add_child(Child, Parent) :-
-    instance(Parent, _),
+    instance(Parent, PClass),
     instance(Child, CClass),
     Parent \= Child,
-    \+ descendant(Parent, Child), % no cycles
-    \+ child(Child, _),           % only one parent
-    (
-        children(Parent, []) ->
-            true
-        ;
-        children(Parent, Children),
-        forall(member(C, Children), instance(C, CClass))  
+    \+ descendant(Parent, Child),  % Prevent circularity
+
+    ( child(Child, ExistingParent) ->
+        format('Child not added: cannot add a child that is already a child of another parent (~w already child of ~w)~n', [Child, ExistingParent])
+    ; true
     ),
-    assertz(child(Child, Parent)).
+
+    children(Parent, Children),
+
+    ( PClass = CClass ->
+        format('Child not added: cannot add a child with the same class (~w)~n', [PClass])
+    ; % classes differ, add child
+      assertz(child(Child, Parent))
+    ).
+
+
 
 % same_concrete(X,Y): X and Y share the same concrete subclass
 same_concrete(X, Y) :-
@@ -66,3 +72,19 @@ descendant(Desc, Ancestor) :-
 descendant(Desc, Ancestor) :-
     child(Desc, Mid),
     descendant(Mid, Ancestor).
+
+valid_children(Parent) :-
+    instance(Parent, PClass),
+    children(Parent, Children),
+    forall(
+        member(Child, Children),
+        (
+            instance(Child, CClass),
+            CClass \= PClass,
+            valid_children(Child)
+        )
+    ).
+valid_children(Parent) :-
+    % If no children, it's valid
+    children(Parent, []),
+    !.

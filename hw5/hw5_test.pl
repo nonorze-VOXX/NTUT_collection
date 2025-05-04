@@ -21,21 +21,24 @@ test(add_children_and_query) :-
     assertion(L == [l3]),
 
     descendants(s1, L1),
-    assertion(L1 == [l3]).
+    assertion(L1 == [l3]),
 
-    % add_child(s2, s1), % mismatched class
-    % children(s1, L),
+    add_child(s2, s1), % mismatched class
+    children(s1, L2),
+    assertion(L2 == [l3]),
 
-    % add_child(l4, s1),
-    % add_child(s2, l3),
+    add_child(l4, s1),
+    add_child(s2, l3),
 
-    % children(s1, L2),
-    % assertion(L2 == [l3, l4]),
+    children(s1, L3),
+    assertion(L3 == [l3, l4]),
 
-    % descendants(s1, D2),
-    % list_to_set(D2, DSet),
-    % list_to_set([l3, l4, s2], Expected),
-    % assertion(DSet == Expected).
+    descendants(s1, L4),
+    assertion(L4 == [l3, l4, s2]),
+    add_child(l5, s2),
+
+    valid_children(s1),
+    valid_children(l3).
 
 :- end_tests(lane_hierarchy).
 
