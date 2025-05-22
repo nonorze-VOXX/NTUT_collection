@@ -9,4 +9,4 @@ COPY ./hw6 /app
 
 # Set the default command to run SWI-Prolog
 # CMD ["swipl", "-f", "word_freq.pl"]
-CMD ["swipl", "-f", "fig12_3.pl", "fig12_6.pl", "hw6_test.pl"]
+CMD ["swipl", "-f", "fig12_3.pl", "hw6_test.pl"]
